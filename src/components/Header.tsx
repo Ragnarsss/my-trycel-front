@@ -1,10 +1,14 @@
 "use client";
+import { IoIosLogIn } from "react-icons/io";
+
 import React, { useEffect, useState } from "react";
 import ThemeToggler from "./ThemeToggler";
 import { usePathname } from "next/navigation";
 import Nav from "./Nav";
+import Drawer from "./Drawer";
 
 const Header = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const [header, setHeader] = useState(false);
   const pathname = usePathname();
 
@@ -38,6 +42,7 @@ const Header = () => {
             />
             <ThemeToggler />
             <div className="xl:hidden"></div>
+            <Drawer isOpen={isOpen} setIsOpen={setIsOpen} />
           </div>
         </div>
       </div>
