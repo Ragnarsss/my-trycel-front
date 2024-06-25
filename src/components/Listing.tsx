@@ -1,6 +1,6 @@
 "use client";
+import React, { FC } from "react";
 
-import * as React from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -19,39 +19,17 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-const frameworks = [
-  {
-    value: "next.js",
-    label: "Next.js",
-  },
-  {
-    value: "sveltekit",
-    label: "SvelteKit",
-  },
-  {
-    value: "nuxt.js",
-    label: "Nuxt.js",
-  },
-  {
-    value: "remix",
-    label: "Remix",
-  },
-  {
-    value: "astro",
-    label: "Astro",
-  },
-];
-
 interface Item {
-  id: number;
-  name: string;
+  value: string;
+  label: string;
 }
 interface listingProps {
   items: Item[];
+  handleSelect: (value: string) => void;
 }
 
-export function Listing({ items }: listingProps) {
-  const itemList = items === undefined ? frameworks : items;
+const Listing: FC<listingProps> = ({ items, handleSelect }) => {
+  const itemList = items === undefined ? [] : items;
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
 
@@ -62,36 +40,37 @@ export function Listing({ items }: listingProps) {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between"
+          className="w-[300px] justify-between"
         >
           {value
             ? itemList.find((framework) => framework.value === value)?.label
-            : "Select framework..."}
+            : "Elegir un centro de alumnos"}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder="Search framework..." />
+          <CommandInput placeholder="Buscar CEAL" />
           <CommandList>
-            <CommandEmpty>No framework found.</CommandEmpty>
+            <CommandEmpty>No CEAL found.</CommandEmpty>
             <CommandGroup>
-              {itemList.map((framework) => (
+              {itemList.map((item) => (
                 <CommandItem
-                  key={framework.value}
-                  value={framework.value}
+                  key={item.value}
+                  value={item.value}
                   onSelect={(currentValue) => {
                     setValue(currentValue === value ? "" : currentValue);
                     setOpen(false);
+                    handleSelect(currentValue);
                   }}
                 >
                   <Check
                     className={cn(
                       "mr-2 h-4 w-4",
-                      value === framework.value ? "opacity-100" : "opacity-0"
+                      value === item.value ? "opacity-100" : "opacity-0"
                     )}
                   />
-                  {framework.label}
+                  {item.label}
                 </CommandItem>
               ))}
             </CommandGroup>
@@ -100,4 +79,6 @@ export function Listing({ items }: listingProps) {
       </PopoverContent>
     </Popover>
   );
-}
+};
+
+export default Listing;

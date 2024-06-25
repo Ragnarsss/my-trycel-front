@@ -1,11 +1,11 @@
 "use client";
-import { IoIosLogIn } from "react-icons/io";
 
-import React, { useEffect, useState } from "react";
-import ThemeToggler from "./ThemeToggler";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
-import Nav from "./Nav";
+import { useEffect, useState } from "react";
 import Drawer from "./Drawer";
+import Nav from "./Nav";
+import ThemeToggler from "./ThemeToggler";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,7 +33,7 @@ const Header = () => {
     >
       <div className="container mx-auto">
         <div className="flex justify-between items-center">
-          <span>Tricel</span>
+          <Link href="/">Tricel</Link>
           <div className="flex items-center gap-x-6">
             <Nav
               containerStyles="hidden xl:flex gap-x-8 items-center"

@@ -1,19 +1,38 @@
 "use client";
 
-import { Listing } from "@/components/Listing";
+import Listing from "@/components/Listing";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useEffect, useState } from "react";
 
+const ceals = [
+  {
+    value: "lista a",
+    label: "CEAL Mechones",
+  },
+  {
+    value: "lista b",
+    label: "CEAL 2do Año",
+  },
+  {
+    value: "lista c",
+    label: "CEAL 3er Año",
+  },
+  {
+    value: "lista d",
+    label: "CEAL 4to Año",
+  },
+];
+
 export default function VotePage() {
   const [agree, setAgree] = useState(false);
-  const [candidates, setCandidates] = useState([
-    { id: 1, name: "Candidato 1" },
-    { id: 2, name: "Candidato 2" },
-    { id: 3, name: "Candidato 3" },
-  ]);
+
   const [selectedCandidate, setSelectedCandidate] = useState("");
   const [userLoggedIn, setUserLoggedIn] = useState(true);
+
+  useEffect(() => {
+    console.log(agree);
+  }, [agree]);
 
   useEffect(() => {
     // Simulando la carga de candidatos y la verificación del estado de autenticación
@@ -25,10 +44,16 @@ export default function VotePage() {
     // fetchData();
   }, []);
 
-  const submitVote = (selected: string) => {};
+  //Llamado a la api de votar
+  const submitVote = async (selected: string) => {};
 
-  const handleSelectCandidate = (candidateId) => {
-    setSelectedCandidate(candidateId);
+  const handleSelect = (value: string) => {
+    setSelectedCandidate(value);
+    console.log(`elemento ${value}`);
+  };
+
+  const handleCheck = () => {
+    setAgree(!agree);
   };
 
   const handleVote = async () => {
@@ -46,23 +71,31 @@ export default function VotePage() {
 
   return (
     <section className="container mx-auto">
-      <h1 className="h1">Votar</h1>
-      <Listing />
-      <div className="items-top flex space-x-2">
-        <Checkbox id="terms1" />
-        <div className="grid gap-1.5 leading-none">
-          <label
-            htmlFor="terms1"
-            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-          >
-            Acepto los terminos y responsabilidades
-          </label>
-          <p className="text-sm text-muted-foreground">
-            Esta es mi decision y estoy votando voluntariamente
-          </p>
+      <h1 className="h1 flex justify-center mb-10">Votar</h1>
+      <div className="flex flex-col items-center min-h-screen">
+        <Listing items={[]} handleSelect={handleSelect} />
+        <div className="items-top flex space-x-2 my-10">
+          <Checkbox checked={agree} onCheckedChange={handleCheck} />
+          <div className="grid gap-1.5 leading-none">
+            <label
+              htmlFor="terms1"
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              Acepto los terminos y responsabilidades
+            </label>
+            <p className="text-sm text-muted-foreground">
+              Esta es mi decision y estoy votando voluntariamente
+            </p>
+          </div>
         </div>
+        <Button
+          title="Votar"
+          onClick={() => handleVote()}
+          disabled={!agree || !selectedCandidate}
+        >
+          Votar
+        </Button>
       </div>
-      <Button title="Votar">Votar</Button>
     </section>
   );
 }
